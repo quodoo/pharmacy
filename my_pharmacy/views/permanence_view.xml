@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='pharmacy_permanence_action_form' model='ir.actions.act_window'>
+        <field name="name">Pharmacy Permanence</field>
+        <field name="res_model">pharmacy.permanence</field>
+        <field name="view_mode">tree,form,graph,kanban,search</field>
+    </record>
+
+    <menuitem name="Pharmacy" id="pharmacy_main_menu" />
+    <menuitem name="Permanence Pharmacies" id="Pharmacy_permanence_menu" parent="pharmacy_main_menu" action="pharmacy_permanence_action_form"/>
+
+    <record id="pharmacy_permanence_view_form" model="ir.ui.view">
+        <field name="name">Pharmacy Permanence Form</field>
+        <field name="model">pharmacy.permanence</field>
+        <field name="arch" type="xml">
+            <form>
+            <group>
+                <field name="name"/>
+                <field name="city"/>
+                <field name="district"/>
+                <field name="garde_status"/>
+            </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="pharmacy_permanence_action_list" model="ir.ui.view">
+        <field name="name">Pharmacy Permanence list</field>
+        <field name="model">pharmacy.permanence</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="city"/>
+                <field name="district"/>
+                <field name="garde_status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="pharmacy_permanence_action_graph" model="ir.ui.view">
+        <field name="name">Pharmacy Permanence Graph</field>
+        <field name="model">pharmacy.permanence</field>
+        <field name="arch" type="xml">
+            <graph string="Pharmacy Permanence Graph">
+                <field name="name" type="row"/>
+                <field name="garde_status" type="measure"/>
+                <field name="city" type="row"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="pharmacy_permanence_view_search" model="ir.ui.view">
+        <field name="name">Pharmacy Permanence Search</field>
+        <field name="model">pharmacy.permanence</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="city"/>
+                <field name="district"/>
+                <filter string="Garde 24h" name="garde_status" domain="[('garde_status', 'ilike', '(24 heures)')]"/>
+                <filter string="Garde jour" name="garde_status" domain="[('garde_status', 'ilike', 'Garde Jour (Ouvert entre 9h et 23h)')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="pharmacy_permanence_action_kanban" model="ir.ui.view">
+        <field name="name">Pharmacy Permanence Kanban</field>
+        <field name="model">pharmacy.permanence</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <div class="o_kanban_primary">
+                                <field name="name"/>
+                            </div>
+                            <div class="o_kanban_secondary">
+                                <field name="city"/>
+                                <field name="district"/>
+                                
+                            </div>
+                            <div >
+
+                                <field name="garde_status"/>
+                            </div>
+
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='pharmacy_pharmacy_action_form' model='ir.actions.act_window'>
+        <field name="name">Pharmacy Pharmacy</field>
+        <field name="res_model">pharmacy.pharmacy</field>
+        <field name="view_mode">tree,form,graph,calendar,search,kanban</field>
+    </record>
+   
+
+    <menuitem name="Pharmacy" id="pharmacy_main_menu" />
+    <menuitem name="Pharmacies" id="Pharmacy_pharmacy_menu" parent="pharmacy_main_menu" action="pharmacy_pharmacy_action_form"/>
+
+    <record id="pharmacy_pharmacy_view_form" model="ir.ui.view">
+        <field name="name">Pharmacy Pharmacy Form</field>
+        <field name="model">pharmacy.pharmacy</field>
+        <field name="arch" type="xml">
+            <form>
+                <header class="o_form_header">
+                    <button name="make_non_permanent" string="Make Non Permanent" type="object"/>
+                    <button name="make_permanent" string="Make Permanent" type="object"/>
+                    <field name="permanenceState" widget="statusbar" class="o_statusbar_status"/>
+                </header>
+                <group class="o_group">
+                    <group>
+                        <field name="name"/>
+                        <field name="short_name"/>
+                        <field name="address"/>
+                        <field name="country"/>
+                        <field name="city"/>
+                        <field name="owner_id"/>
+                        <field name="medicines" widget="many2many_tags"/>
+                    </group>
+                    <group>
+                        <field name="logo" widget="image" class="oe_left oe_avatar"/>
+                        <field name="dateStartPermanence"/>
+                        <field name="dateEndPermanence"/>
+                        <field name="latitude"/>
+                        <field name="longitude"/>
+                        <field name="location_link"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="pharmacy_pharmacy_action_list" model="ir.ui.view">
+        <field name="name">Pharmacy Pharmacy list</field>
+        <field name="model">pharmacy.pharmacy</field>
+        <field name="arch" type="xml">
+            <tree multi_edit="1">
+                <field name="name"/>
+                <field name="short_name"/>
+                <field name="city"/>
+                <field name="country"/>
+                <field name="address"/>
+                <field name="dateStartPermanence"/>
+                <field name="dateEndPermanence"/>
+                <field name="latitude"/>
+                <field name="longitude"/>
+                <field name="medicines"/>
+                <field name="location_link" widget="url"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="pharmacy_pharmacy_action_graph" model="ir.ui.view">
+        <field name="name">Pharmacy Pharmacy Extended Graph</field>
+        <field name="model">pharmacy.pharmacy</field>
+        <field name="arch" type="xml">
+            <graph string="Pharmacies">
+                <field name="name" type="row"/>
+                <field name="dateStartPermanence" type="measure"/>
+                <field name="city" type="row"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="pharmacy_pharmacy_view_calendar" model="ir.ui.view">
+        <field name="model">pharmacy.pharmacy</field>
+        <field name="arch" type="xml">
+            <calendar date_start="dateStartPermanence" date_stop="dateEndPermanence">
+                <field name="name"/>
+                <field name="permanenceState"/>
+                <field name="city"/>
+                <field name="country"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="pharmacy_pharmacy_view_search" model="ir.ui.view">
+        <field name="name">Pharmacy Pharmacy Extended Search</field>
+        <field name="model">pharmacy.pharmacy</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="city"/>
+                <filter string="Permanence" name="permanenceState" domain="[('permanenceState', '=', 'Permanence')]"/>
+                <filter string="Non Permanence" name="permanenceState" domain="[('permanenceState', '=', 'NonPermanence')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="pharmacy_pharmacy_action_kanban" model="ir.ui.view">
+        <field name="name">Pharmacy Pharmacy Kanban</field>
+        <field name="model">pharmacy.pharmacy</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <div class="o_kanban_primary">
+                                <field name="name"/>
+                            </div>
+                            <div class="o_kanban_secondary">
+                                <field name="city"/>
+                                <field name="country"/>
+                                <field name="address"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="order_view_kanban" model="ir.ui.view">
+        <field name="name">order Kanban</field>
+        <field name="model">pharmacy.order</field>
+        <field name="arch" type="xml">
+            <kanban string="Order Kanban">
+                <field name="code"/>
+                <field name="stock_id"/>
+                <field name="orderBookDate"/>
+                <field name="orderState"/>
+            </kanban>
+        </field>
+    </record>
+
+</odoo>

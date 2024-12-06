@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id='order_action_form' model='ir.actions.act_window'>
+        <field name="name">Order</field>
+        <field name="res_model">pharmacy.order</field>
+        <field name="view_mode">tree,form,graph,calendar,kanban,search</field>
+        <field name="domain">[('pharmacie.owner_id', '=', uid)]</field>
+    </record>
+
+    <menuitem name="Pharmacy" id="pharmacy_main_menu"/>
+    <!-- SAME IN ALL VIEWS-->
+    <menuitem name="Order" id="order_menu" parent="pharmacy_main_menu" action="order_action_form"/>
+
+
+    <record id="order_view_form" model="ir.ui.view">
+        <field name="name">Order Form</field>
+        <field name="model">pharmacy.order</field>
+        <field name="arch" type="xml">
+            <form>
+                <header class="o_form_header">
+                    <button name="make_booked" string="Book medicine" type="object"/>
+                    <button name="make_canceled" string="Cancel command" type="object"/>
+                    <button name="make_paid" string="Finish command" type="object"/>
+                    <field name="orderState" widget="statusbar" class="o_statusbar_status"/>
+                </header>
+                <group>
+                    <field name="code"/>
+                    <field name="stock_id" domain="[('pharmacie_id.owner_id', '=', uid)]"/>
+                    <field name="orderBookDate"/>
+                </group>
+            </form>
+
+        </field>
+
+    </record>
+
+
+    <record id="order_view_list" model="ir.ui.view">
+        <field name="name">Order List</field>
+        <field name="model">pharmacy.order</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="code"/>
+                <field name="stock_id"/>
+                <field name="pharmacie"/>
+                <field name="medicament"/>
+                <field name="orderBookDate"/>
+                <field name="orderState"/>
+            </tree>
+
+        </field>
+
+    </record>
+
+    <record id="order_view_graph" model="ir.ui.view">
+        <field name="name">Order Graph</field>
+        <field name="model">pharmacy.order</field>
+        <field name="arch" type="xml">
+            <graph string="Order Graph" type="bar">
+                <field name="orderBookDate" interval="month"/>
+                <field name="pharmacie"/>
+                <field name="medicament"/>
+                <field name="orderState"/>
+                <field name="code" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+
+    <record id="order_search_view" model="ir.ui.view">
+        <field name="name">Order Search</field>
+        <field name="model">pharmacy.order</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="code" string="Code"/>
+                <field name="stock_id" string="Stock"/>
+                <field name="pharmacie" string="Pharmacy"/>
+                <field name="medicament" string="Medicament"/>
+                <filter string="Booked" name="orderState" domain="[('orderState', '=', 'booked')]"/>
+                <filter string="Canceled" name="orderState" domain="[('orderState', '=', 'canceled')]"/>
+                <filter string="Paid" name="orderState" domain="[('orderState', '=', 'paid')]"/>
+               <filter string="Today" name="orderBookDate" domain="[('orderBookDate', '>=', (context_today().strftime('%Y-%m-%d 00:00:00'))), ('orderBookDate', '&lt;=', (context_today().strftime('%Y-%m-%d 23:59:59')))]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="order_view_calendar" model="ir.ui.view">
+        <field name="name">Order Calendar</field>
+        <field name="model">pharmacy.order</field>
+        <field name="arch" type="xml">
+            <calendar string="Order Calendar" date_start="orderBookDate" date_stop="schedule_cancel_date">
+                <field name="pharmacie"/>
+                <field name="medicament"/>
+                <field name="orderState"/>
+                <field name="code"/>
+            </calendar>
+        </field>
+    </record>
+
+
+
+
+
+</odoo>
